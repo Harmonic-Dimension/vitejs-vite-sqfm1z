@@ -1,10 +1,15 @@
 <script>
+  import { Button, Col, Row, Icon } from 'sveltestrap';
+
   let count = 0
   const increment = () => {
     count += 1
   }
 </script>
 
-<button on:click={increment}>
-  count is {count}
-</button>
+<Row>
+  <Col>
+    <Button on:click={increment} color="primary" outline><Icon name="globe2"/> count is {count}</Button>
+  </Col>
+</Row>
+
