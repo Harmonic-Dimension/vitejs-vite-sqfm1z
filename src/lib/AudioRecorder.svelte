@@ -15,8 +15,22 @@
       const blob = new Blob(media, {'type' : 'audio/ogg; codecs=opus' });
       media = [];
       audio.src = window.URL.createObjectURL(blob);
+      // Create a download link
+      const downloadLink = document.createElement('a');
+      downloadLink.href = window.URL.createObjectURL(blob);
+      downloadLink.download = 'recording.ogg'; // Specify the desired filename
+
+      // Add the download link to the document
+      document.body.appendChild(downloadLink);
+      // Simulate a click event to trigger the download
+      downloadLink.click();
+
+      // Clean up by removing the download link
+      document.body.removeChild(downloadLink);
     }
-  })
+  }
+  )
+
   function startRecording(){ 
     mediaRecorder.start();
     spinner = true;
