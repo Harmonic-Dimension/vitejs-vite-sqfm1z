@@ -31,7 +31,11 @@
 <main>
   <div>
     <img src={egkLogo} class="logo" alt="1GK Logo" />
-    <h2>één groene knop</h2>
+    <h2> 1gk test 7</h2>
+  </div>
+
+  <div class="card">
+    <Counter />
   </div>
 
   <div class="card">
