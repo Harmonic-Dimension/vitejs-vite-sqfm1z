@@ -23,18 +23,18 @@
 </script>
 
 <Navbar color="light" light expand="md">
-  <NavbarBrand href="/">1gk test 7</NavbarBrand>
+  <NavbarBrand href="/">één groene knop</NavbarBrand>
   <NavbarToggler on:click={() => (isOpen = !isOpen)} />
   <Collapse {isOpen} navbar expand="md" on:update={handleUpdate}>
     <Nav class="ms-auto" navbar>
-      <NavItem>
+      <!-- <NavItem>
         <NavLink href="#components/">Components</NavLink>
-      </NavItem>
+      </NavItem> -->
       <NavItem>
-        <NavLink href="https://en.wikipedia.org/wiki/Main_Page">Website</NavLink>
+        <NavLink href="https://www.eengroeneknop.nl/">Website</NavLink>
       </NavItem>
       <Dropdown nav inNavbar>
-        <DropdownToggle nav caret>Options</DropdownToggle>
+        <DropdownToggle nav caret>Opties</DropdownToggle>
         <DropdownMenu end>
           <DropdownItem>Option 1</DropdownItem>
           <DropdownItem>Option 2</DropdownItem>

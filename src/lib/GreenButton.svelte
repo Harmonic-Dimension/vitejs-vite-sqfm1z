@@ -1,6 +1,13 @@
 <script>
   import { createEventDispatcher } from 'svelte';
-  import { Button, Col, Row, Icon, Spinner } from 'sveltestrap';
+  import { Button, 
+           Card, 
+           CardBody,
+           CardText, 
+           Col, 
+           Row, 
+           Icon, 
+           Spinner } from 'sveltestrap';
 
   const dispatch = createEventDispatcher();
 
@@ -23,30 +30,31 @@
 
 <Row>
   <Col> 
-    <button on:click={iconswap} class="green-button">
-      <div class="image-container">
-        <Icon name={icons[count % iconslen]} />
-      </div>
-    </button>
+   <Card class="mb-3">
+      <CardBody>
+      <button on:click={iconswap} class="green-button">
+        <div class="image-container">
+          <Icon name={icons[count % iconslen]} />
+        </div>
+      </button>
+        <CardText>
+          {#if (count % iconslen) == 0} 
+            Laten we beginnen...
+          {:else if (count % iconslen) == 1}
+            Start de opname!
+          {:else if (count % iconslen) == 2}
+            Opname begonnen <Spinner color="success" />
+          {:else if (count % iconslen) == 3}
+            Verwerken... <Spinner color="info" />
+          {:else if (count % iconslen) == 4}
+            Klaar! 
+          {/if}
+        </CardText>
+      </CardBody>
+    </Card>
   </Col>
 </Row>
-<Row>
-  <Col>
-    <div><p>
-    {#if (count % iconslen) == 0} 
-      Laten we beginnen...
-    {:else if (count % iconslen) == 1}
-      Start de opname!
-    {:else if (count % iconslen) == 2}
-      Opname begonnen <Spinner color="success" />
-    {:else if (count % iconslen) == 3}
-      Verwerken... <Spinner color="info" />
-    {:else if (count % iconslen) == 4}
-      Klaar! 
-    {/if}
-    </p></div>
-  </Col>
-</Row>
+
 
 <style>
 
