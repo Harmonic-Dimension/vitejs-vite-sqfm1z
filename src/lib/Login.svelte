@@ -52,17 +52,25 @@
     }
   </script>
   
-  {#if userstate.loggedIn}
-    <Button on:click={toggle} color="dark" outline>Log out</Button>
-  {:else}
-    <Button on:click={toggle} color="success" outline>Login</Button>
-  {/if}
+  <div align=right>
+    {#if userstate.loggedIn}
+      <Button on:click={toggle} color="dark" outline>Log out</Button>
+    {:else}
+      <Button on:click={toggle} color="primary" outline>Login</Button>
+    {/if}
+  </div>
 
   <Offcanvas header="Log in" backdrop={false} isOpen={canvasopen} {toggle}>
     <div id="firebaseui-auth-container"></div>
-     <p>User logged in: {userstate.loggedIn}</p>
+     <p class='info mt-5'>--User logged in: <code>{userstate.loggedIn}</code>--</p>
   </Offcanvas>
  
+
+ <style>
+  .info {
+    color: #ADADAD;
+  }
+ </style>
  
 
 

@@ -22,7 +22,7 @@
   }
 </script>
 
-<Navbar color="light" light expand="md">
+<Navbar expand="md">
   <NavbarBrand href="/">één groene knop</NavbarBrand>
   <NavbarToggler on:click={() => (isOpen = !isOpen)} />
   <Collapse {isOpen} navbar expand="md" on:update={handleUpdate}>

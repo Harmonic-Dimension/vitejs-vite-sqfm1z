@@ -1,5 +1,6 @@
 <script>
   import './firebase.js';
+  import { onMount } from 'svelte';
 
   import svelteLogo from './assets/svelte.svg';
   import egkLogo from './assets/Rec-Button.png';
@@ -7,35 +8,50 @@
   import Login from './lib/Login.svelte';
   import GreenButton from './lib/GreenButton.svelte';
   import MyNavBar from './lib/MyNavBar.svelte';
-  import AudioRecorder from './lib/AudioRecorder.svelte';
+ // import AudioRecorder from './lib/AudioRecorder.svelte';
 
 
   import { Row, Col, Styles } from 'sveltestrap';
+
+  onMount(() => {
+    document.body.style.background = 'linear-gradient(231.05deg, #DCDCDC 11.19%, #FFFFFF 84.75%)';
+  });
 </script>
 <Styles />
 
 <main>
-  <MyNavBar />
+
   <!-- <div>
     <img src={egkLogo} class="logo" alt="1GK Logo" />
     <h2> 1gk test 7</h2>
   </div> -->
 
   <Row>
-    <Col/>
+    <Col>
+      <!-- <MyNavBar /> -->
+    </Col>
     <Col/>
     <Col>
       <Login />
     </Col>
   </Row>
 
-
+  <Row class="mt-4">
+  <Col xs="1">
+  </Col>
+  <Col>
+    <h1 class="landing-header">
+    één groene knop
+    </h1>
+  </Col>
+  <Col xs='1'>
+  </Col>
+  <Col>
   <div>
     <GreenButton />
   </div>
-  <div>
-    <AudioRecorder />
-  </div>
+  </Col>
+  </Row>
 
 </main>
 
@@ -51,5 +67,22 @@
   }
   .read-the-docs {
     color: #888;
+  }
+
+  .landing-header {
+    font-family: 'Inter';
+    font-style: normal;
+    font-weight: 700;
+    font-size: 5em;
+    line-height: 94%;
+    /* or 94% */
+    text-align: right;
+    letter-spacing: -0.021em;
+
+    background: linear-gradient(97.51deg, #B95CDA 10.36%, #7D3496 78.79%, #581270 101.49%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    text-fill-color: transparent;
   }
 </style>

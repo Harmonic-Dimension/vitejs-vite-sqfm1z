@@ -3,7 +3,7 @@
   import { Row, Col, Button, Spinner } from 'sveltestrap';
 
   let media = [];
-  let mediaRecorder = null;
+  export let mediaRecorder = null;
   let spinner = false;
   let showcontrols = false;
   onMount(async () => {
