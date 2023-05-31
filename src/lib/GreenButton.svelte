@@ -1,6 +1,7 @@
 <script>
   import { createEventDispatcher,
-           onMount } from 'svelte';
+           onMount,
+           onDestroy } from 'svelte';
   import { Button, 
            Card, 
            CardBody,
@@ -8,7 +9,10 @@
            Icon, 
            Progress,
            Popover,
-           Spinner } from 'sveltestrap';
+           Spinner,
+           Toast,
+           ToastBody,
+           ToastHeader } from 'sveltestrap';
   import Timer from './Timer.svelte';
 
   const dispatch = createEventDispatcher();
@@ -17,23 +21,27 @@
   let icons = ["hand-index-thumb", "mic", "mic-mute", "hourglass-split", 'clipboard-check'];
   let iconslen = icons.length;
   let active = true;
-
-  let media = [];
-  export let mediaRecorder = null;
   let spinner = false;
   let showcontrols = false;
+  let demoState = true;
+
+  let media = [];
+  let mediaRecorder = null;
+  let audioElement;
+
   onMount(async () => {
   const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
   mediaRecorder = new MediaRecorder(stream, { mimeType: 'audio/webm' });
 
   mediaRecorder.ondataavailable = (e) => media.push(e.data);
   mediaRecorder.onstop = function () {
-    const audio = document.querySelector('audio');
+    // const audio = document.querySelector('audio');
     const blob = new Blob(media, { 'type': 'audio/webm' });
     media = [];
-    audio.src = window.URL.createObjectURL(blob);
+    audioElement.src = window.URL.createObjectURL(blob);
   };
 });
+
   // onMount(async () => {
   //   const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
   //   mediaRecorder = new MediaRecorder(stream);
@@ -58,6 +66,12 @@
   // }
   // )
 
+  onDestroy(() => {
+    if (audioElement) {
+      audioElement.src = '';
+    }
+  });
+
   function startRecording(){ 
     mediaRecorder.start();
     spinner = true;
@@ -71,10 +85,16 @@
 
   const iconswap = () => {
     count += 1
-    if (count == 2) {
+    if (count % iconslen == 0) {
+      showcontrols = false;
+    }
+    else if (count % iconslen == 1) {
+      active = false;
+    }
+    else if (count % iconslen == 2) {
       startRecording();
     }
-    else if (count == 3) {
+    else if (count % iconslen == 3) {
       stopRecording();
       active = false;
       // TODO: take the data and process it
@@ -84,7 +104,7 @@
         count += 1;
         }, 3000);
     }
-    else if (count == 4) {
+    else if (count % iconslen == 4) {
       showcontrols = true;
     }
   };
@@ -123,51 +143,61 @@
 
           {/if}
           </div>
-        <!-- </CardText>
-      </CardBody>
-    </Card> -->
-    <Card class="mb-3 w-100">
+
+      <Toast class="me-1 w-100"> 
       {#if (count % iconslen) == 0}
-      <Progress value={0}/>
-        <div class="mt-3 encourage" center>
-          Klik op de groene knop!
-        </div>
-        
+        <ToastHeader>
+          Stap 1: Klik op de groene knop!
+        </ToastHeader>
+        <ToastBody>
+          Eén groene knop is een app die fysiotherapeuten helpt met het schrijven van dossiers.
+        </ToastBody>
       {:else if (count % iconslen) == 1}
-      <Progress value={0} />
-        <div class="mt-3 encourage" center>
-          Klik nog een keer
-        </div>
-
+        <ToastHeader>
+          Stap 2: Toestemming van uw patiënt verkrijgen.
+        </ToastHeader>
+        <ToastBody>
+          <input type=checkbox bind:checked={active}>  Uw patiënt begrijpt en is akkoord met de algemene voorwaarden voor het gebruik van één groene knop.
+        </ToastBody>
       {:else if (count % iconslen) == 2}
-      <Progress value={33} />
-        <Timer />
-        <div class="mt-3 encourage" center>
-          <p> De opname is begonnen.</p>
-          <p> Klik nog een keer om de opname te stoppen.</p>
-        </div>
+        <ToastHeader>
+          Stap 3: Gesprek opnemen.
+        </ToastHeader>
+        <ToastBody>
+          <Timer />
+          <br>
 
+          Eén groene knop luister nu mee met uw gesprek met de patiënt. Druk als het gesprek afgelopen is nog een keer op de groenen knop.
+        </ToastBody>
       {:else if (count % iconslen) == 3}
-      <Progress value={66}} />
-         <div class="mt-3 encourage" center>
-          De AI is nu bezig met de opname te verwerken. Een momentje geduld a.u.b.
-        </div>
+        <ToastHeader>
+          Stap 4: Gesprek analyseren.
+        </ToastHeader>
+        <ToastBody>
+          Eén groene knop analyseert nu met behulp van AI het gesprek, en schrijft alvast uw dossierstukken. Even geduld a.u.b.
+        </ToastBody>
       {:else if (count % iconslen) == 4}
-      <Progress value={100} />
-        <div class="mt-3 encourage" center>
-          Uw rapportage is klaar!
-        </div>
+        <ToastHeader>
+          Klaar!
+        </ToastHeader>
+        <ToastBody>
+          Eén groene knop heeft de stukken voor u klaargezet. 
+        </ToastBody>
       {/if}
-      </Card>
-      {#if showcontrols}
-      <Card class="mt-3">
-        <div>
-          <audio controls />
-        </div>
-      </Card>
+      </Toast> 
+
+      {#if showcontrols && demoState}
+      <Toast class="me-1 w-100">
+        <ToastHeader>
+          Audio-opname terugluisteren (demo)
+        </ToastHeader>
+        <ToastBody>
+          <div class="mt-3">
+            <audio bind:this={audioElement} controls />
+          </div>
+        </ToastBody>
+      </Toast>
       {/if}
-
-
 
 <style>
 
@@ -183,8 +213,11 @@
   }
 
   .green-button:hover {
-    background-color: #4BA93B;
+    background-color: #5DD04B;
+  }
 
+  .green-button:disabled {
+    background-color: #A2C19C;
   }
 
   .encourage {
