@@ -1,54 +1,57 @@
 <script>
-  // Import the functions you need from the SDKs you need
-  import { initializeApp } from 'firebase/app';
-  import { getAnalytics } from 'firebase/analytics';
-  // TODO: Add SDKs for Firebase products that you want to use
-  // https://firebase.google.com/docs/web/setup#available-libraries
+  import './firebase.js';
+  import { onMount } from 'svelte';
 
-  // Your web app's Firebase configuration
-  // For Firebase JS SDK v7.20.0 and later, measurementId is optional
-  const firebaseConfig = {
-    apiKey: 'AIzaSyB6QHSoISmIVzdJV2lo148lHNOTpjzqSeg',
-    authDomain: 'gk-test1-5bf3c.firebaseapp.com',
-    projectId: 'gk-test1-5bf3c',
-    storageBucket: 'gk-test1-5bf3c.appspot.com',
-    messagingSenderId: '880199901174',
-    appId: '1:880199901174:web:0eaf2b9f9b9c85e575b1d7',
-    measurementId: 'G-69CFQ0WN06',
-  };
+  import svelteLogo from './assets/svelte.svg';
+  import egkLogo from './assets/Rec-Button.png';
+  import Counter from './lib/Counter.svelte';
+  import Login from './lib/Login.svelte';
+  import GreenButton from './lib/GreenButton.svelte';
+  import MyNavBar from './lib/MyNavBar.svelte';
+ // import AudioRecorder from './lib/AudioRecorder.svelte';
 
-  // Initialize Firebase
-  const app = initializeApp(firebaseConfig);
-  const analytics = getAnalytics(app);
 
-  import svelteLogo from './assets/svelte.svg'
-  import egkLogo from './assets/Rec-Button.png'
-  import Counter from './lib/Counter.svelte'
-  import Login from './lib/Login.svelte'
-  import GreenButton from './lib/GreenButton.svelte'
+  import { Row, Col, Styles } from 'sveltestrap';
+
+  onMount(() => {
+    document.body.style.background = 'linear-gradient(231.05deg, #DCDCDC 11.19%, #FFFFFF 84.75%)';
+  });
 </script>
+<Styles />
 
 <main>
-  <div>
+
+  <!-- <div>
     <img src={egkLogo} class="logo" alt="1GK Logo" />
     <h2> 1gk test 7</h2>
-  </div>
+  </div> -->
 
-  <div class="card">
-    <Counter />
-  </div>
+  <Row>
+    <Col>
+      <!-- <MyNavBar /> -->
+    </Col>
+    <Col/>
+    <Col>
+      <Login />
+    </Col>
+  </Row>
 
-  <div class="card">
-    <Counter />
-  </div>
-
-  <div class="card">
-    <Login />
-  </div>
-
-  <div class="card">
+  <Row class="mt-4">
+  <Col xs="1">
+  </Col>
+  <Col>
+    <h1 class="landing-header">
+    één groene knop
+    </h1>
+  </Col>
+  <Col xs='1'>
+  </Col>
+  <Col>
+  <div>
     <GreenButton />
   </div>
+  </Col>
+  </Row>
 
 </main>
 
@@ -64,5 +67,22 @@
   }
   .read-the-docs {
     color: #888;
+  }
+
+  .landing-header {
+    font-family: 'Inter';
+    font-style: normal;
+    font-weight: 700;
+    font-size: 5em;
+    line-height: 94%;
+    /* or 94% */
+    text-align: right;
+    letter-spacing: -0.021em;
+
+    background: linear-gradient(97.51deg, #B95CDA 10.36%, #7D3496 78.79%, #581270 101.49%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    text-fill-color: transparent;
   }
 </style>

@@ -1,4 +1,6 @@
   <script>
+    import { Button, Col, Row, Offcanvas } from 'sveltestrap';
+
     import {
       getAuth,
       signInWithEmailAndPassword,
@@ -9,6 +11,7 @@
     import * as firebaseui from 'firebaseui';
 
     let auth = getAuth();
+    let canvasopen = false;
     let userstate = { loggedIn: false};
     
     const ui = new firebaseui.auth.AuthUI(auth);
@@ -40,6 +43,7 @@
 
 
     function toggle() {
+        canvasopen = !canvasopen;
         if (!userstate.loggedIn) {
           ui.start('#firebaseui-auth-container', uiConfig);
         } else {
@@ -48,15 +52,25 @@
     }
   </script>
   
-  {#if userstate.loggedIn}
-    <button on:click={toggle}>Log out</button>
-  {:else}
-    <button on:click={toggle}>Login</button>
-  {/if}
+  <div align=right>
+    {#if userstate.loggedIn}
+      <Button on:click={toggle} color="dark" outline>Log out</Button>
+    {:else}
+      <Button on:click={toggle} color="primary" outline>Login</Button>
+    {/if}
+  </div>
 
-  <div id="firebaseui-auth-container"></div>
+  <Offcanvas header="Log in" backdrop={false} isOpen={canvasopen} {toggle}>
+    <div id="firebaseui-auth-container"></div>
+     <p class='info mt-5'>--User logged in: <code>{userstate.loggedIn}</code>--</p>
+  </Offcanvas>
+ 
 
-  <p>User logged in: {userstate.loggedIn}</p>
+ <style>
+  .info {
+    color: #ADADAD;
+  }
+ </style>
  
 
 
