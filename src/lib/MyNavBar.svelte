@@ -2,6 +2,7 @@
   import {
     Button,
     Collapse,
+    Icon,
     Navbar,
     NavbarToggler,
     NavbarBrand,
@@ -22,8 +23,9 @@
   }
 </script>
 
+<div>
 <Navbar expand="md">
-  <NavbarBrand href="/">één groene knop</NavbarBrand>
+  <NavbarBrand href="/" style="color:#59BF48"><Icon name="bullseye" />1GK</NavbarBrand>
   <NavbarToggler on:click={() => (isOpen = !isOpen)} />
   <Collapse {isOpen} navbar expand="md" on:update={handleUpdate}>
     <Nav class="ms-auto" navbar>
@@ -31,10 +33,10 @@
         <NavLink href="#components/">Components</NavLink>
       </NavItem> -->
       <NavItem>
-        <NavLink href="https://www.eengroeneknop.nl/">Website</NavLink>
+        <NavLink href="https://www.eengroeneknop.nl/">Documentatie</NavLink>
       </NavItem>
       <Dropdown nav inNavbar>
-        <DropdownToggle nav caret>Opties</DropdownToggle>
+        <DropdownToggle nav caret>Help</DropdownToggle>
         <DropdownMenu end>
           <DropdownItem>Option 1</DropdownItem>
           <DropdownItem>Option 2</DropdownItem>
@@ -48,3 +50,4 @@
     </Nav>
   </Collapse>
 </Navbar>
+</div>
