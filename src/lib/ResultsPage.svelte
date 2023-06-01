@@ -1,76 +1,147 @@
 <script>
 import {Button,
-        Card,
-        CardBody,
-        CardFooter,
-        CardHeader,
-        CardText,
-        CardTitle,
+        ButtonGroup,
         Col,
         Icon,
         Popover,
         Row } from 'sveltestrap';
 
+import ReportCard from './ReportCard.svelte';
+
+let patientbehoeftenText = '';
+let stoornissenText = '';
+let historieText = '';
+let beperkingenText = '';
+
+let conclusiesText = '';
+let soepText = '';
+let behandelplanText = '';
+
+function loadTextFromFile(filepath) {
+  return fetch(filepath)
+    .then(response => response.text())
+    .then(data => {
+      return data;
+    })
+    .catch(error => {
+      console.log('Error:', error);
+    });
+};
+
+export let demoToken = true;
+function setDemoText(demoToken) {
+  if (demoToken) {
+    loadTextFromFile('../assets/demotext/SOEP-rapportage.txt').then(soepText  => {
+    console.log(soepText)});
+  }
+};
+
+
+
 let dummyText = 'De fysiotherapeut heeft de patiënt gevraagd de pijn te beschrijven en heeft gevraagd of er zwelling of blauwe plekken zijn opgemerkt. De fysiotherapeut heeft vervolgens de patiënt gevraagd om zijn arm omhoog te tillen, maar de patiënt kon dit niet doen vanwege de pijn. Op basis van deze informatie concludeert de fysiotherapeut dat de schouder van de patiënt ontwricht is. Er zijn geen specifieke tests genoemd die zijn uitgevoerd.';
 
-let showPopover = false;
 
-function copyToClipboard(text) {
-  const textarea = document.createElement('textarea');
-  textarea.value = text;
 
-  // Make the textarea non-editable to avoid focus and unwanted text selection.
-  textarea.setAttribute('readonly', '');
+let currentTab = 'anamnese';
+let anamneseColor = 'primary';
+let conclusiesColor = 'outline-primary';
+let soepColor = 'outline-primary';
+let behandelplanColor = 'outline-primary';
 
-  // Hide the textarea from rendering.
-  textarea.style.position = 'absolute';
-  textarea.style.left = '-9999px';
 
-  document.body.appendChild(textarea);
-  
-  // Select and copy the text.
-  textarea.select();
-  document.execCommand('copy');
-
-  // Clean up the temporary textarea.
-  document.body.removeChild(textarea);
+function openAnamnese() {
+  currentTab = 'anamnese';
+  anamneseColor = 'primary'
+  conclusiesColor = 'outline-primary';
+  soepColor = 'outline-primary';
+  behandelplanColor = 'outline-primary';
 }
 
-const copyPaste = () => {
-  copyToClipboard(dummyText);
-  showPopover = true;
-  setTimeout(() => {
-        showPopover = false;
-        }, 2000);
-};
+function openConclusies() {
+  currentTab = 'conclusies';
+  anamneseColor = 'outline-primary'
+  conclusiesColor = 'primary';
+  soepColor = 'outline-primary';
+  behandelplanColor = 'outline-primary';
+}
+
+function openSoepRapport() {
+  currentTab = 'soepRapport';
+  anamneseColor = 'outline-primary'
+  conclusiesColor = 'outline-primary';
+  soepColor = 'primary';
+  behandelplanColor = 'outline-primary';
+}
+
+function openBehandelplan() {
+  currentTab = 'behandelplan';
+  anamneseColor = 'outline-primary'
+  conclusiesColor = 'outline-primary';
+  soepColor = 'outline-primary';
+  behandelplanColor = 'primary';
+}
 
 </script>
 
 
 <div>
-  <Row>
-  <Col>
-  <Card class='mb-3'>
-    <CardHeader > 
-      <CardTitle>
-        SOEP-rapportage
-      </CardTitle>
-    </CardHeader>
-    <CardBody>
-      <div class="card-body">
-        {dummyText}
-      </div>
-    </CardBody>
-    <CardFooter>
-      <Button id="cpBtn" on:click={copyPaste} color='primary' outline><Icon name="clipboard-plus" /></Button>
-      <Popover bind:showPopover placement="top" target="cpBtn">Tekst gekopiëerd naar clipboard.</Popover>
+  <div class='mb-5'>
+  <ButtonGroup>
+    <Button color={anamneseColor} on:click={openAnamnese}>Anamnese</Button>
+    <Button color={conclusiesColor} on:click={openConclusies}>Conclusies</Button>
+    <Button color={soepColor} on:click={openSoepRapport}>SOEP-rapport</Button>
+    <Button color={behandelplanColor} on:click={openBehandelplan}>Behandelplan</Button>
+  </ButtonGroup>
+  </div>
 
-    </CardFooter>
-  </Card>
-  </Col>
-  <Col>
-  </Col>
-  </Row>
+  {#if (currentTab == 'anamnese')}
+    <Row>
+      <Col>
+        <ReportCard titleText='Patiëntbehoeften' bodyText={dummyText}/>
+      </Col>
+      <Col>
+      <ReportCard titleText='Stoornissen' bodyText={dummyText}/>
+      </Col>
+    </Row>
+    <Row>
+      <Col>
+        <ReportCard titleText='Historie' bodyText={dummyText}/>
+      </Col>
+      <Col>
+      <ReportCard titleText='Beperkingen' bodyText={dummyText}/>
+      </Col>
+    </Row>
+  {:else if (currentTab == 'conclusies')}
+    <Row>
+      <Col xs='2'>
+      </Col>
+      <Col>
+      <ReportCard titleText='Conclusies' bodyText={dummyText}/>
+      </Col>
+      <Col xs='2'>
+      </Col>
+    </Row>
+  {:else if (currentTab == 'soepRapport')}
+    <Row>
+      <Col xs='2'>
+      </Col>
+      <Col>
+      <ReportCard titleText='SOEP-rapport' bodyText={soepText}/>
+      </Col>
+      <Col xs='2'>
+      </Col>
+    </Row>
+  {:else if (currentTab == 'behandelplan')}
+    <Row>
+      <Col xs='2'>
+      </Col>
+      <Col>
+      <ReportCard titleText='Behandelplan' bodyText={dummyText}/>
+      </Col>
+      <Col xs='2'>
+      </Col>
+    </Row>
+  {/if}
 </div>
 
 <style>
