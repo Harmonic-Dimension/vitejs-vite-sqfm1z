@@ -71,6 +71,6 @@ import {Button,
 <style>
 .card-body {
   text-align: left;
-}
-
+  white-space: pre-wrap;
+  }
 </style>

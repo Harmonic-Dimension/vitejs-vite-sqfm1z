@@ -6,41 +6,34 @@ import {Button,
         Popover,
         Row } from 'sveltestrap';
 
+
 import ReportCard from './ReportCard.svelte';
+import DemoButton from './DemoButton.svelte';
 
-let patientbehoeftenText = '';
-let stoornissenText = '';
-let historieText = '';
-let beperkingenText = '';
+let patientbehoeftenText = '[Beschrijving van de patiëntbehoeften]';
+let stoornissenText = '[Beschrijving van de stoornissen]';
+let historieText = '[Beschrijving van de historie]';
+let beperkingenText = '[Beschrijving van de beperkingen]';
 
-let conclusiesText = '';
-let soepText = '';
-let behandelplanText = '';
+let conclusiesText = '[Beschrijving van de conclusies]';
+let soepText = '[Beschrijving van de SOEP-rapportage]';
+let behandelplanText = '[Beschrijving van het behandelplan]';
 
-function loadTextFromFile(filepath) {
-  return fetch(filepath)
-    .then(response => response.text())
-    .then(data => {
-      return data;
-    })
-    .catch(error => {
-      console.log('Error:', error);
-    });
-};
 
-export let demoToken = true;
-function setDemoText(demoToken) {
-  if (demoToken) {
-    loadTextFromFile('../assets/demotext/SOEP-rapportage.txt').then(soepText  => {
-    console.log(soepText)});
-  }
-};
+function handleDemoMessage(event) {
+  alert('Demoteksten ingevuld');
+  patientbehoeftenText = event.detail.patientbehoeftenMessage;
+  stoornissenText = event.detail.stoornissenMessage;
+  historieText = event.detail.historieMessage;
+  beperkingenText = event.detail.beperkingenMessage;
 
+  conclusiesText = event.detail.conclusiesMessage;
+  soepText = event.detail.soepMessage;
+  behandelplanText = event.detail.behandelplanMessage;
+}
 
 
 let dummyText = 'De fysiotherapeut heeft de patiënt gevraagd de pijn te beschrijven en heeft gevraagd of er zwelling of blauwe plekken zijn opgemerkt. De fysiotherapeut heeft vervolgens de patiënt gevraagd om zijn arm omhoog te tillen, maar de patiënt kon dit niet doen vanwege de pijn. Op basis van deze informatie concludeert de fysiotherapeut dat de schouder van de patiënt ontwricht is. Er zijn geen specifieke tests genoemd die zijn uitgevoerd.';
-
-
 
 let currentTab = 'anamnese';
 let anamneseColor = 'primary';
@@ -86,29 +79,38 @@ function openBehandelplan() {
 
 <div>
   <div class='mb-5'>
+  <Row>
+  <Col xs='1'>
+  </Col>
+  <Col>
   <ButtonGroup>
     <Button color={anamneseColor} on:click={openAnamnese}>Anamnese</Button>
     <Button color={conclusiesColor} on:click={openConclusies}>Conclusies</Button>
     <Button color={soepColor} on:click={openSoepRapport}>SOEP-rapport</Button>
     <Button color={behandelplanColor} on:click={openBehandelplan}>Behandelplan</Button>
   </ButtonGroup>
+  </Col>
+  <Col xs='1'>
+  <DemoButton on:message={handleDemoMessage}/>
+  </Col>
+  </Row>
   </div>
 
   {#if (currentTab == 'anamnese')}
     <Row>
       <Col>
-        <ReportCard titleText='Patiëntbehoeften' bodyText={dummyText}/>
+        <ReportCard titleText='Patiëntbehoeften' bodyText={patientbehoeftenText}/>
       </Col>
       <Col>
-      <ReportCard titleText='Stoornissen' bodyText={dummyText}/>
+      <ReportCard titleText='Stoornissen' bodyText={stoornissenText}/>
       </Col>
     </Row>
     <Row>
       <Col>
-        <ReportCard titleText='Historie' bodyText={dummyText}/>
+        <ReportCard titleText='Historie' bodyText={historieText}/>
       </Col>
       <Col>
-      <ReportCard titleText='Beperkingen' bodyText={dummyText}/>
+      <ReportCard titleText='Beperkingen' bodyText={beperkingenText}/>
       </Col>
     </Row>
   {:else if (currentTab == 'conclusies')}
@@ -116,7 +118,7 @@ function openBehandelplan() {
       <Col xs='2'>
       </Col>
       <Col>
-      <ReportCard titleText='Conclusies' bodyText={dummyText}/>
+      <ReportCard titleText='Conclusies' bodyText={conclusiesText}/>
       </Col>
       <Col xs='2'>
       </Col>
@@ -136,13 +138,16 @@ function openBehandelplan() {
       <Col xs='2'>
       </Col>
       <Col>
-      <ReportCard titleText='Behandelplan' bodyText={dummyText}/>
+      <ReportCard titleText='Behandelplan' bodyText={behandelplanText}/>
       </Col>
       <Col xs='2'>
       </Col>
     </Row>
   {/if}
+
 </div>
+
+
 
 <style>
 .card-body {
