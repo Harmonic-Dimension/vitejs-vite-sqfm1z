@@ -1,4 +1,5 @@
 <script>
+
 import {Button,
         Card,
         CardBody,
@@ -14,7 +15,6 @@ import {Button,
   export let bodyText = '[Tekst]';
 
   let copySuccess = false;
-  
 
   function copyToClipboard(text) {
     const textarea = document.createElement('textarea');
@@ -47,7 +47,7 @@ import {Button,
 
 
 <div>
-  <Card class='p-0 mb-3 w-100'>
+  <Card  class='p-0 mb-3 w-100'>
     <CardHeader> 
       <CardTitle class='p-0 mt-1'>
         {titleText}

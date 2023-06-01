@@ -15,19 +15,28 @@
 
   import { Row, Col, Styles } from 'sveltestrap';
 
-  let newRecording = false;
+  let newRecording = true;
 
   onMount(() => {
     document.body.style.background = 'linear-gradient(231.05deg, #DCDCDC 11.19%, #FFFFFF 84.75%)';
   });
+
+  function handleMessage(event) {
+    if (event.detail.text == 'New') {
+      newRecording = true;
+    } else if (event.detail.text == 'Report') {
+      newRecording = false;
+    };
+    }
 </script>
+
 <Styles />
 
 <main>
 
     <Row class='mb-5'>
       <Col>
-        <MyNavBar />
+        <MyNavBar on:message={handleMessage} />
       </Col>
       <Col/>
       <Col>
@@ -48,7 +57,9 @@
     </Col>
     <Col>
     <div>
+      {#key newRecording}
       <GreenButton />
+      {/key}
     </div>
     </Col>
     </Row>

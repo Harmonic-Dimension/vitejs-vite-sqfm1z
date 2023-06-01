@@ -42,31 +42,11 @@
   };
 });
 
-  // onMount(async () => {
-  //   const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
-  //   mediaRecorder = new MediaRecorder(stream);
-  //   mediaRecorder.ondataavailable = (e) => media.push(e.data)
-  //   mediaRecorder.onstop = function(){
-  //     const audio = document.querySelector('audio');
-  //     const blob = new Blob(media, {'type' : 'audio/ogg; codecs=opus' });
-  //     media = [];
-  //     audio.src = window.URL.createObjectURL(blob);
-      
-  //     // // Create a download link
-  //     // const downloadLink = document.createElement('a');
-  //     // downloadLink.href = window.URL.createObjectURL(blob);
-  //     // downloadLink.download = 'recording.ogg'; // Specify the desired filename;
-  //     // // Add the download link to the document
-  //     // document.body.appendChild(downloadLink);
-  //     // // Simulate a click event to trigger the download
-  //     // downloadLink.click();
-  //     // // Clean up by removing the download link
-  //     // document.body.removeChild(downloadLink);
-  //   }
-  // }
-  // )
-
   onDestroy(() => {
+    if (mediaRecorder && mediaRecorder.state !== 'inactive') {
+      mediaRecorder.stop();
+      mediaRecorder = null;
+    }
     if (audioElement) {
       audioElement.src = '';
     }

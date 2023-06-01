@@ -1,4 +1,8 @@
 <script lang="ts">
+  import { createEventDispatcher } from 'svelte';
+
+  const dispatch = createEventDispatcher();
+  
   import {
     Button,
     Collapse,
@@ -14,13 +18,28 @@
     DropdownMenu,
     DropdownItem
   } from 'sveltestrap';
+  
   import Login from './Login.svelte';
 
   let isOpen = false;
+  export let newRecording = true;
 
   function handleUpdate(event) {
     isOpen = event.detail.isOpen;
   }
+
+  function toNew() {
+    dispatch('message', {
+      text: 'New'
+    });
+  }
+
+  function toReport() {
+    dispatch('message', {
+      text: 'Report'
+    });
+  }
+
 </script>
 
 <div>
@@ -33,15 +52,18 @@
         <NavLink href="#components/">Components</NavLink>
       </NavItem> -->
       <NavItem>
-        <NavLink href="https://www.eengroeneknop.nl/">Documentatie</NavLink>
+        <NavLink on:click={toNew}>Nieuw</NavLink>
+      </NavItem>
+      <NavItem>
+        <NavLink on:click={toReport}>Dossier</NavLink>
       </NavItem>
       <Dropdown nav inNavbar>
         <DropdownToggle nav caret>Help</DropdownToggle>
         <DropdownMenu end>
-          <DropdownItem>Option 1</DropdownItem>
-          <DropdownItem>Option 2</DropdownItem>
+          <DropdownItem>Gebruiksinstructie</DropdownItem>
+          <DropdownItem>Helpdesk</DropdownItem>
           <DropdownItem divider />
-          <DropdownItem>Reset</DropdownItem>
+          <DropdownItem href="https://www.eengroeneknop.nl/">Website</DropdownItem>
         </DropdownMenu>
       </Dropdown>
       <!-- <NavItem>
