@@ -8,50 +8,64 @@
   import Login from './lib/Login.svelte';
   import GreenButton from './lib/GreenButton.svelte';
   import MyNavBar from './lib/MyNavBar.svelte';
+  import ResultsPage from './lib/ResultsPage.svelte';
+
  // import AudioRecorder from './lib/AudioRecorder.svelte';
 
 
   import { Row, Col, Styles } from 'sveltestrap';
 
+  let newRecording = true;
+
   onMount(() => {
     document.body.style.background = 'linear-gradient(231.05deg, #DCDCDC 11.19%, #FFFFFF 84.75%)';
   });
+
+  function handleMessage(event) {
+    if (event.detail.text == 'New') {
+      newRecording = true;
+    } else if (event.detail.text == 'Report') {
+      newRecording = false;
+    };
+    }
 </script>
+
 <Styles />
 
 <main>
 
-  <!-- <div>
-    <img src={egkLogo} class="logo" alt="1GK Logo" />
-    <h2> 1gk test 7</h2>
-  </div> -->
-
-  <Row>
-    <Col>
-      <!-- <MyNavBar /> -->
+    <Row class='mb-5'>
+      <Col>
+        <MyNavBar on:message={handleMessage} />
+      </Col>
+      <Col/>
+      <Col>
+        <Login />
+      </Col>
+    </Row>
+  
+  {#if (newRecording)}
+    <Row class="mt-4">
+    <Col xs="1">
     </Col>
-    <Col/>
     <Col>
-      <Login />
+      <h1 class="landing-header">
+      één groene knop
+      </h1>
     </Col>
-  </Row>
-
-  <Row class="mt-4">
-  <Col xs="1">
-  </Col>
-  <Col>
-    <h1 class="landing-header">
-    één groene knop
-    </h1>
-  </Col>
-  <Col xs='1'>
-  </Col>
-  <Col>
-  <div>
-    <GreenButton />
-  </div>
-  </Col>
-  </Row>
+    <Col xs='1'>
+    </Col>
+    <Col>
+    <div>
+      {#key newRecording}
+      <GreenButton />
+      {/key}
+    </div>
+    </Col>
+    </Row>
+  {:else}
+    <ResultsPage />
+  {/if}
 
 </main>
 
