@@ -1,4 +1,5 @@
 <script lang="ts">
+  import logoSimple from '../assets/Logo-simple.svg';
   import { createEventDispatcher } from 'svelte';
 
   const dispatch = createEventDispatcher();
@@ -44,7 +45,7 @@
 
 <div>
 <Navbar expand="md">
-  <NavbarBrand href="/" style="color:#48BF91"><Icon name="bullseye" />1GK</NavbarBrand>
+  <NavbarBrand href="/">bla</NavbarBrand>
   <NavbarToggler on:click={() => (isOpen = !isOpen)} />
   <Collapse {isOpen} navbar expand="md" on:update={handleUpdate}>
     <Nav class="ms-auto" navbar>
