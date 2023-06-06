@@ -2,7 +2,8 @@
   import './firebase.js';
   import { onMount } from 'svelte';
 
-  import svelteLogo from './assets/svelte.svg';
+
+  import favicon from './assets/Favicon.svg';
   import egkLogo from './assets/Rec-Button.png';
   import Counter from './lib/Counter.svelte';
   import Login from './lib/Login.svelte';
@@ -46,14 +47,14 @@
   
   {#if (newRecording)}
     <Row class="mt-4">
-    <Col xs="1">
+    <Col xs="2">
     </Col>
     <Col>
       <h1 class="landing-header">
-      één groene knop
+      één <span class='highlight'>groene</span> knop
       </h1>
     </Col>
-    <Col xs='1'>
+    <Col xs='2'>
     </Col>
     <Col>
     <div>
@@ -84,19 +85,20 @@
   }
 
   .landing-header {
-    font-family: 'Inter';
+    font-family: 'Work sans';
     font-style: normal;
-    font-weight: 700;
+    font-weight: 300;
     font-size: 5em;
     line-height: 94%;
     /* or 94% */
     text-align: right;
     letter-spacing: -0.021em;
 
-    background: linear-gradient(97.51deg, #B95CDA 10.36%, #7D3496 78.79%, #581270 101.49%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-    text-fill-color: transparent;
   }
+
+  .highlight {
+  background-color: #48BF91;
+  color: #ffffff;
+}
+
 </style>

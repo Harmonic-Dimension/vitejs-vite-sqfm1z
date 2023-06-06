@@ -184,7 +184,7 @@
   .green-button {
     width: 3em;
     height: 3em;
-    background-color: #59bf48;
+    background-color: #48bf91;
     text: #ffffff;
     font-size: 3em;
     border-radius: 100%;
@@ -193,11 +193,11 @@
   }
 
   .green-button:hover {
-    background-color: #5DD04B;
+    background-color: #54DEA9;
   }
 
   .green-button:disabled {
-    background-color: #A2C19C;
+    background-color: #2D7E5F;
   }
 
   .encourage {
