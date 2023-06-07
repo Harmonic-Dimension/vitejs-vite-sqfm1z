@@ -10,7 +10,7 @@
   import MyNavBar from './lib/MyNavBar.svelte';
   import ResultsPage from './lib/ResultsPage.svelte';
 
- // import AudioRecorder from './lib/AudioRecorder.svelte';
+  import AudioRecorder from './lib/AudioRecorder.svelte';
 
 
   import { Row, Col, Styles } from 'sveltestrap';

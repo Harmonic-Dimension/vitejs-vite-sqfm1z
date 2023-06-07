@@ -1,16 +1,6 @@
-import fs from 'fs';
-import { Configuration, OpenAIApi } from 'openai';
-import path from 'path';
-//dotenv allows for storing environment variables in a .env file.
-import dotenv from 'dotenv';
-
-// these two lines give us the current working directory
-const __filename = import.meta.url;
-const __dirname = path.dirname(new URL(__filename).pathname);
-
-// to find the .env file, take the current working directory and move up two levels to the root directory
-// NOTE: if the root is no longer two levels up from the current directory this will give an error
-dotenv.config({ path: path.resolve(__dirname, '..', '..', '.env') });
+const fs = require('fs');
+const { Configuration, OpenAIApi } = require('openai');
+require('dotenv').config();
 
 const openai_api_key = process.env.OPENAI_API_KEY;
 
