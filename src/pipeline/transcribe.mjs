@@ -1,6 +1,6 @@
 import fs from 'fs';
 import { Configuration, OpenAIApi } from 'openai';
-//dotenv allows for storing environment variables in a .env file
+//dotenv allows for storing environment variables in a .env file.
 import dotenv from 'dotenv';
 
 dotenv.config();
