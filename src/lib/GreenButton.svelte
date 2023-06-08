@@ -14,6 +14,7 @@
            ToastBody,
            ToastHeader } from 'sveltestrap';
   import Timer from './Timer.svelte';
+  import transcribe from '../pipeline/transcribe.mjs'
 
   const dispatch = createEventDispatcher();
 
@@ -39,6 +40,9 @@
     const blob = new Blob(media, { 'type': 'audio/webm' });
     media = [];
     audioElement.src = window.URL.createObjectURL(blob);
+
+    //Transcribing
+    const transcription_json = transcribe(blob)
   };
 });
 
@@ -85,6 +89,7 @@
         }, 3000);
     }
     else if (count % iconslen == 4) {
+      //TODO: Redirect to result page
       showcontrols = true;
     }
   };

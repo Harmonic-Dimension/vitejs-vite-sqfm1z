@@ -1,7 +1,7 @@
 <script>
   import { onMount } from 'svelte';
   import { Row, Col, Button, Spinner } from 'sveltestrap';
-  import transcribe from '../pipeline/transcribe.mjs'
+  //import transcribe from '../pipeline/transcribe.mjs'
 
   let media = [];
   export let mediaRecorder = null;

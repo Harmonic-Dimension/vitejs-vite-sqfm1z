@@ -1,3 +1,5 @@
+//TODO: try rewriting in svelte
+
 import fs from 'fs';
 import { Configuration, OpenAIApi } from 'openai';
 import path from 'path';
@@ -5,12 +7,16 @@ import path from 'path';
 import dotenv from 'dotenv';
 
 // these two lines give us the current working directory
+//const __filename = import.meta.url;
+//const __dirname = path.dirname(new URL(__filename).pathname);
+
 const __filename = import.meta.url;
-const __dirname = path.dirname(new URL(__filename).pathname);
+const __dirname = new URL('.', __filename).pathname;
 
 // to find the .env file, take the current working directory and move up two levels to the root directory
 // NOTE: if the root is no longer two levels up from the current directory this will give an error
-dotenv.config({ path: path.resolve(__dirname, '..', '..', '.env') });
+//dotenv.config({ path: path.resolve(__dirname, '..', '..', '.env') });
+dotenv.config({ path: __dirname + '/../../.env' });
 
 const openai_api_key = process.env.OPENAI_API_KEY;
 
@@ -19,7 +25,6 @@ async function transcribe(
   { model, prompt, response_format, temperature, language }
 ) {
   console.log('Transcribing...');
-  console.log(openai_api_key);
 
   try {
     // Calling the Whisper API
@@ -61,5 +66,5 @@ const params = {
   language: 'nl',
 };
 
-const transcript = await transcribe(file, params);
+export default transcript = await transcribe(file, params);
 console.log(transcript.data.text);
