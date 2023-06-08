@@ -15,6 +15,9 @@
 
   import { Row, Col, Styles } from 'sveltestrap';
 
+  // Importing the api_key which is stored in stores.js after it is entered by the user
+  import { api_key } from './stores.js';
+
   let newRecording = true;
 
   onMount(() => {
@@ -28,6 +31,12 @@
       newRecording = false;
     };
     }
+
+  // Function that updates the api_key when it is entered in the input field
+  function updateApiKey(event) {
+    api_key.set(event.target.value);
+  }
+
 </script>
 
 <Styles />
@@ -58,7 +67,7 @@
     <Col>
     <div>
       {#key newRecording}
-      <GreenButton />
+      <GreenButton/>
       {/key}
     </div>
     </Col>
@@ -66,6 +75,10 @@
   {:else}
     <ResultsPage />
   {/if}
+
+  <Row>
+    <input on:input={updateApiKey}>
+  </Row>
 
 </main>
 
