@@ -1,6 +1,7 @@
 <script>
   import { onMount } from 'svelte';
   import { Row, Col, Button, Spinner } from 'sveltestrap';
+  //import transcribe from '../pipeline/transcribe.mjs'
 
   let media = [];
   export let mediaRecorder = null;
@@ -15,6 +16,12 @@
       const blob = new Blob(media, {'type' : 'audio/ogg; codecs=opus' });
       media = [];
       audio.src = window.URL.createObjectURL(blob);
+
+      console.log("End of recording")
+
+      // Transcribe the blob
+      //transcription_json = transcribe(blob);
+
       // // Create a download link
       // const downloadLink = document.createElement('a');
       // downloadLink.href = window.URL.createObjectURL(blob);

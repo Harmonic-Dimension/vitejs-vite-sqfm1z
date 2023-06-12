@@ -14,6 +14,18 @@
            ToastBody,
            ToastHeader } from 'sveltestrap';
   import Timer from './Timer.svelte';
+  import transcribe from '../pipeline/transcribe_script.mjs'
+
+  // Importing the api_key which is stored in stores.js after it is entered by the user
+  import { api_key } from './../stores.js';
+
+  // Defining a variable in which we store the api_key as retrieved from stores.js
+  let api_key_value;
+
+  // Subscribing to the api_key store
+  api_key.subscribe(value => {
+    api_key_value = value;
+  })
 
   const dispatch = createEventDispatcher();
 
@@ -34,11 +46,34 @@
   mediaRecorder = new MediaRecorder(stream, { mimeType: 'audio/webm' });
 
   mediaRecorder.ondataavailable = (e) => media.push(e.data);
-  mediaRecorder.onstop = function () {
+
+  //NOTE: changed this to be async to accomodate the transcribe() call
+  mediaRecorder.onstop = async function () {
     // const audio = document.querySelector('audio');
     const blob = new Blob(media, { 'type': 'audio/webm' });
     media = [];
     audioElement.src = window.URL.createObjectURL(blob);
+
+    // Creating a webm file from the recorded conversation:
+    const audio = new File(
+      [blob],
+      'gesprek.webm',
+      { 'type': 'audio/webm' },
+    );
+
+    // Specifying the parameters for the transcription call
+    const params = {
+    model: 'whisper-1',
+    prompt:
+      'Hier volgt een geluidsopname van een gesprek tussen een fysiotherapeut en een patient',
+    response_format: 'json',
+    temperature: 0,
+    language: 'nl'
+    };
+
+    // Transcribing the recorded conversation
+    const transcript = await transcribe(audio, api_key_value, params)
+    console.log(transcript.data.text)
   };
 });
 
@@ -85,6 +120,7 @@
         }, 3000);
     }
     else if (count % iconslen == 4) {
+      //TODO: Redirect to result page
       showcontrols = true;
     }
   };
