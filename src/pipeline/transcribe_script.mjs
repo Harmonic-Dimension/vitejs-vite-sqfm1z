@@ -5,11 +5,7 @@ import { Configuration, OpenAIApi } from 'openai';
 
 //const openai_api_key = process.env.OPENAI_API_KEY;
 
-export default async function transcribe(
-  file,
-  api_key,
-  { model, prompt, response_format, temperature, language }
-) {
+export default async function transcribe(file, api_key, {model, prompt, response_format, temperature, language}) {
   const configuration = new Configuration({
     apiKey: api_key,
     formDataCtor: CustomFormData,
@@ -49,6 +45,3 @@ class CustomFormData extends FormData {
     return {};
   }
 }
-
-//export default transcript = await transcribe(file, api_key, params);
-//console.log(transcript.data.text);

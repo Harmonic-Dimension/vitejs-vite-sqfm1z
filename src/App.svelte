@@ -18,17 +18,26 @@
   // Importing the api_key which is stored in stores.js after it is entered by the user
   import { api_key } from './stores.js';
 
+  // Importing a variable in which we can store the created report so that ResultsPage can access it
+  import { report } from './stores.js';
+
   let newRecording = true;
 
   onMount(() => {
     document.body.style.background = 'linear-gradient(231.05deg, #DCDCDC 11.19%, #FFFFFF 84.75%)';
   });
 
+  // 'Report' is sent as dispatch text in two cases: manually when the user clicks on the Report page before having created a report, and 
+  // and automatically when a report has been created
   function handleMessage(event) {
     if (event.detail.text == 'New') {
       newRecording = true;
     } else if (event.detail.text == 'Report') {
       newRecording = false;
+      if(event.detail.ReportStatus == 'Created'){
+        // Storing the report so that ResultsPage can access it
+        report.set(event.detail.report);
+      }
     };
     }
 
@@ -67,7 +76,7 @@
     <Col>
     <div>
       {#key newRecording}
-      <GreenButton/>
+      <GreenButton on:message={handleMessage}/>
       {/key}
     </div>
     </Col>
