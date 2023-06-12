@@ -1,7 +1,7 @@
 import { Configuration, OpenAIApi } from 'openai';
 
 // Function that takes an object containing prompts and returns an object containing responses to the prompts
-export default async function create_report(model, prompts, api_key){
+export default async function create_report_from_transcription(model, prompts, api_key){
     const configuration = new Configuration({
         apiKey: api_key,
         });
@@ -34,9 +34,6 @@ export default async function create_report(model, prompts, api_key){
     console.log("Finished creating report")
     return report;
 }
-    
-//console.log(model_prompt)
-//console.log(prompts[model_prompt]);
 
 
 

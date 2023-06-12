@@ -51,6 +51,8 @@ if(typeof report_value != "undefined"){
   beperkingenText = report_value.disabilities_messages;
 }
 
+
+//TODO: generating the remaining fields
 let conclusiesText = '[Beschrijving van de conclusies]';
 let soepText = '[Beschrijving van de SOEP-rapportage]';
 let behandelplanText = '[Beschrijving van het behandelplan]';

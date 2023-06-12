@@ -52,5 +52,3 @@ export default function create_all_report_messages(transcript){
           disabilities_messages: create_disabilities_messages(transcript)
         }
 }
-
-//console.log(create_medical_history_messages("---------TEST TEXT------------"))

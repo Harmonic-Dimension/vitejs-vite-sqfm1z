@@ -14,13 +14,10 @@
            ToastBody,
            ToastHeader } from 'sveltestrap';
   import Timer from './Timer.svelte';
-  import transcribe from '../pipeline/transcribe_script.mjs'
-  import create_medical_history_messages from '../pipeline/create_report_messages.mjs'
-  import create_report from '../pipeline/create_report_script.mjs'
+  import create_report from '../pipeline/create_report.mjs';
 
   // Importing the api_key which is stored in stores.js after it is entered by the user
   import { api_key } from './../stores.js';
-    import create_all_report_messages from '../pipeline/create_report_messages.mjs';
 
   // Defining a variable in which we store the api_key as retrieved from stores.js
   let api_key_value;
@@ -50,9 +47,9 @@
 
   mediaRecorder.ondataavailable = (e) => media.push(e.data);
 
-  //NOTE: changed this to be async to accomodate the transcribe() call
+  //NOTE: changed this to be async to accomodate the create_report() call
   mediaRecorder.onstop = async function () {
-    // const audio = document.querySelector('audio');
+    // Creating a binary large object in which we will store the audio file of the conversation
     const blob = new Blob(media, { 'type': 'audio/webm' });
     media = [];
     audioElement.src = window.URL.createObjectURL(blob);
@@ -64,37 +61,9 @@
       { 'type': 'audio/webm' },
     );
 
-    // TODO: refactor so that the following domain logic is separate from the UI
-    // Specifying the parameters for the transcription call
-    const params = {
-    model: 'whisper-1',
-    prompt:
-      'Hier volgt een geluidsopname van een gesprek tussen een fysiotherapeut en een patient',
-    response_format: 'json',
-    temperature: 0,
-    language: 'nl'
-    };
-
-    // Transcribing the recorded conversation
-    const transcript = await transcribe(audio, api_key_value, params);
-    const transcript_text = transcript.data.text;
-    console.log(transcript_text)
-
-    // NOTE: uncomment and comment above lines to use dummy text instead
-    //const transcript_text = "Je hebt toestemming gegeven dat ik dit gesprek opneem. Ja. Wat zijn je klachten? Nee, sorry, wat is jouw hulpvraag om mee te komen? Nou, ik heb al een tijdje last van mijn dijkbeen aan de bovenkant. Sinds hoe lang? Een jaar al. Ik ben er al mee naar de huisarts geweest en die heeft me al doorverwezen naar een fysio. Die heeft me al geholpen. Een jaar geleden. Die zei dat het de adductorspier was waar het probleem in zat. Die heeft het ook behandeld en dat is nu wel beter. Maar aan de buitenkant van mijn dijkbeen doet het nog steeds pijn. En wat is dan de reden dat je bij mij komt? Nou, vooral omdat ik me ergerde aan het feit dat ik niet goed kan fietsen op deze manier. En ik wil daar toch wel vanaf. Je zei dat je er al een tijdje last van hebt. Weet je bij benadering hoe lang? In enige vorm al meer dan een jaar nu. "
-
-    // Generating the prompts
-    const prompts = create_all_report_messages(transcript_text);
-
-    //const medical_history_prompt = create_medical_history_messages(transcript_text);
-
-    // Creating the medical report
-    const model = "gpt-3.5-turbo";
-    //const medical_history_report = await create_report(model, medical_history_prompt, api_key_value);
-    const report = await create_report(model, prompts, api_key_value);
-    console.log(report);
-    //console.log(medical_history_report);
-    //console.log((medical_history_report).data.choices[0].message);
+    // This function runs the pipeline. The output is an object containing fields for the various elements in the medical record, along with text
+    // corresponding to that element
+    const report = await create_report(audio, api_key_value, true);
 
     // Redirecting to ResultsPage where we display the report text
     dispatch('message', {
@@ -102,7 +71,6 @@
       ReportStatus: 'Created',
       report: report
     })
-
   };
 });
 
