@@ -14,7 +14,7 @@
            ToastBody,
            ToastHeader } from 'sveltestrap';
   import Timer from './Timer.svelte';
-  import transcribe from '../pipeline/transcribe_script.mjs'
+  import create_report from '../pipeline/create_report.mjs';
 
   // Importing the api_key which is stored in stores.js after it is entered by the user
   import { api_key } from './../stores.js';
@@ -47,9 +47,9 @@
 
   mediaRecorder.ondataavailable = (e) => media.push(e.data);
 
-  //NOTE: changed this to be async to accomodate the transcribe() call
+  //NOTE: changed this to be async to accomodate the create_report() call
   mediaRecorder.onstop = async function () {
-    // const audio = document.querySelector('audio');
+    // Creating a binary large object in which we will store the audio file of the conversation
     const blob = new Blob(media, { 'type': 'audio/webm' });
     media = [];
     audioElement.src = window.URL.createObjectURL(blob);
@@ -61,19 +61,16 @@
       { 'type': 'audio/webm' },
     );
 
-    // Specifying the parameters for the transcription call
-    const params = {
-    model: 'whisper-1',
-    prompt:
-      'Hier volgt een geluidsopname van een gesprek tussen een fysiotherapeut en een patient',
-    response_format: 'json',
-    temperature: 0,
-    language: 'nl'
-    };
+    // This function runs the pipeline. The output is an object containing fields for the various elements in the medical record, along with text
+    // corresponding to that element
+    const report = await create_report(audio, api_key_value, true);
 
-    // Transcribing the recorded conversation
-    const transcript = await transcribe(audio, api_key_value, params)
-    console.log(transcript.data.text)
+    // Redirecting to ResultsPage where we display the report text
+    dispatch('message', {
+      text: 'Report',
+      ReportStatus: 'Created',
+      report: report
+    })
   };
 });
 

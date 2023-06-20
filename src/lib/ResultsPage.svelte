@@ -10,11 +10,49 @@ import {Button,
 import ReportCard from './ReportCard.svelte';
 import DemoButton from './DemoButton.svelte';
 
-let patientbehoeftenText = '[Beschrijving van de patiëntbehoeften]';
-let stoornissenText = '[Beschrijving van de stoornissen]';
-let historieText = '[Beschrijving van de historie]';
-let beperkingenText = '[Beschrijving van de beperkingen]';
+// Importing the report which is stored in stores.js after it created in GreenButton.svelte
+import { report } from './../stores.js';
 
+// Defining a variable in which we store the api_key as retrieved from stores.js
+let report_value;
+
+// Subscribing to the report store
+report.subscribe(value => {
+  report_value = value;
+})
+
+// TEST
+console.log(report_value)
+
+// let patientbehoeftenText = '[Beschrijving van de patiëntbehoeften]';
+// let stoornissenText = '[Beschrijving van de stoornissen]';
+// let historieText = '[Beschrijving van de historie]';
+// let beperkingenText = '[Beschrijving van de beperkingen]';
+
+// let conclusiesText = '[Beschrijving van de conclusies]';
+// let soepText = '[Beschrijving van de SOEP-rapportage]';
+// let behandelplanText = '[Beschrijving van het behandelplan]';
+
+// We check to make sure report_value is defined, if so we assign the report text to variables which will be pasted in the text fields
+// @ts-ignore is used to suppres the javascript warning saying report_value might be undefined
+let patientbehoeftenText;
+let stoornissenText;
+let historieText;
+let beperkingenText;
+
+if(typeof report_value != "undefined"){
+  // @ts-ignore
+  patientbehoeftenText = report_value.patient_needs_messages;
+  // @ts-ignore
+  stoornissenText = report_value.disorders_messages;
+  // @ts-ignore
+  historieText = report_value.medical_history_messages;
+  // @ts-ignore
+  beperkingenText = report_value.disabilities_messages;
+}
+
+
+//TODO: generating the remaining fields
 let conclusiesText = '[Beschrijving van de conclusies]';
 let soepText = '[Beschrijving van de SOEP-rapportage]';
 let behandelplanText = '[Beschrijving van het behandelplan]';

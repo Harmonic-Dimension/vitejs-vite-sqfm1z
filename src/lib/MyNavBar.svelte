@@ -36,6 +36,7 @@
 
   function toReport() {
     dispatch('message', {
+      
       text: 'Report'
     });
   }
